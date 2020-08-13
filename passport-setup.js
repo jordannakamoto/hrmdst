@@ -17,6 +17,6 @@ passport.use(new OAuth2Strategy({
     callbackURL: "https://hrmdst.azurewebsites.net/auth/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-      return cb(user, profile);
+      return cb(null, profile);
     }
 ));
