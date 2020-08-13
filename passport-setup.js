@@ -14,7 +14,7 @@ passport.use(new OAuth2Strategy({
     tokenURL: 'https://api.typeform.com/oauth/token',
     clientID: 'EdvcmQHDyeUhasLMZbpEBe291eCXa26wXuQ57UaCxPzx',
     clientSecret: '99GVbThNm36RMbPwPBDnCKyLhX9m6BihNX4LoXoNxmwR',
-    callbackURL: "https://hrmdst.azurewebsites.net/auth/callback",
+    callbackURL: "/auth/callback",
 	scope: ["responses:read"]
   },
   function(accessToken, refreshToken, profile, cb) {

@@ -45,7 +45,8 @@ var test = () => {
 fetch('https://api.typeform.com/forms/JpSFde/responses')
   .then(response => response.json())
   .then(data => {
-    console.log(data)
+    console.log(data);
+	res.render("succes",{data});
   })
 }
 
@@ -56,7 +57,7 @@ app.use(passport.session());
 
 // success/fail paths
 app.get('/failed', (req,res) => res.send("You failed to log in"));
-app.get('/good', isLoggedIn,(req,res) => {test; res.send("Welcome ${req.user}")});
+app.get('/good', isLoggedIn,(req,res) => {test});
 
 
 app.get('/auth',
