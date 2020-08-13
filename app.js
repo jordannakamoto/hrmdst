@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const fetch = require('node-fetch');
 require('./passport-setup');
 
 var indexRouter = require('./routes/index');
@@ -40,13 +41,22 @@ const isLoggedIn = (req, res, next) => {
 		}
 }
 
+var test = () => {
+fetch('https://api.typeform.com/forms/JpSFde/responses')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+  })
+}
+
+
 // Passport JS Init / Routes
 app.use(passport.initialize());
 app.use(passport.session());
 
 // success/fail paths
 app.get('/failed', (req,res) => res.send("You failed to log in"));
-app.get('/good', isLoggedIn,(req,res) => res.send("Welcome ${req.user}"));
+app.get('/good', isLoggedIn,(req,res) => {test; res.send("Welcome ${req.user}")});
 
 
 app.get('/auth',
