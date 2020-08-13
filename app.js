@@ -3,9 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+require('./passport-setup');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -20,7 +23,48 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//app.use('/users', usersRouter);
+
+// Define Cookie Session
+app.use(cookieSession({
+	name: 'session',
+	keys: ['key1','key2']
+}));
+
+// validate session midddleware
+const isLoggedIn = (req, res, next) => {
+		if(req.user){
+			next();
+		} else {
+			res.sendStatus(401);
+		}
+}
+
+// Passport JS Init / Routes
+app.use(passport.initialize());
+app.use(passport.session());
+
+// success/fail paths
+app.get('/failed', (req,res) => res.send("You failed to log in"));
+app.get('/good', isLoggedIn,(req,res) => res.send("Welcome $(req.user)"));
+
+
+app.get('/auth',
+  passport.authenticate('oauth2', {scope: ['responses:read']}));
+
+app.get('/auth/callback',
+  passport.authenticate('oauth2', { failureRedirect: '/authfail' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/good');
+  });
+  
+app.get('/logout', (req, res) => {
+  req.session = null;
+  req.logout();
+  res.redirect('/');
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
