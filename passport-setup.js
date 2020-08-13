@@ -2,7 +2,7 @@ const passport = require('passport');
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
