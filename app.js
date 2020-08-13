@@ -46,7 +46,7 @@ app.use(passport.session());
 
 // success/fail paths
 app.get('/failed', (req,res) => res.send("You failed to log in"));
-app.get('/good', isLoggedIn,(req,res) => res.send("Welcome $(req.user)"));
+app.get('/good', isLoggedIn,(req,res) => res.send("Welcome ${req.user}"));
 
 
 app.get('/auth',
